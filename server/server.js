@@ -1,7 +1,8 @@
-require("dotenv").config;
+require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
 const app = express();
+const db = require("./DB/index.js");
 
 app.use(express.json());
 
@@ -14,7 +15,9 @@ app.use(express.json());
 // });
 
 // GET all Restaurants
-app.get("/api/v1/restaurants", (req, res) => {
+app.get("/api/v1/restaurants", async (req, res) => {
+    const results = await db.query("SELECT * FROM restaurants");
+    console.log(results);
     res.status(200).json({
         status: "succes",
         data: {
@@ -45,7 +48,7 @@ app.put("/api/v1/restaurants/:id", (req, res) => {
 });
 
 app.delete("/api/v1/restaurants/:id", (req, res) => {
-    
+
 })
 
 const port = process.env.PORT || 3005;
