@@ -1,10 +1,10 @@
 import React from 'react'
 
 const AddRestaurant = () => {
-  return (
-    <div className="mb-4">
+    return (
+    <div className="mb-4 container">
       <form action="">
-        <div className="form-row">
+        <div className="row">
           <div className="col">
             <input type="text" className="form-control" placeholder="Name..." />
           </div>
@@ -25,7 +25,7 @@ const AddRestaurant = () => {
               <option value="5">$$$$$</option>
             </select>
           </div>
-          <button className='btn btn-primary'>Add</button>  
+          <button className="col btn btn-primary">Add</button>
         </div>
       </form>
     </div>
