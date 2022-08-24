@@ -3,7 +3,9 @@ const express = require("express");
 const morgan = require("morgan");
 const app = express();
 const db = require("./DB/index.js");
+const cors = require("cors");
 
+app.use(cors());
 app.use(express.json());
 
 // app.use(morgan("dev"));
@@ -19,7 +21,6 @@ app.use(express.json());
 app.get("/api/v1/restaurants", async (req, res) => {
     try {
         const results = await db.query("SELECT * FROM restaurants");
-        console.log(results);
         res.status(200).json({
             status: "succes",
             results: results.rows.length,
@@ -42,7 +43,6 @@ app.get("/api/v1/restaurants/:id", async (req, res) => {
       const result = await db.query("SELECT * FROM restaurants WHERE id = $1", [
         id,
       ]);
-      console.log(result);
       res.status(200).json({
         status: "success",
         data: {
