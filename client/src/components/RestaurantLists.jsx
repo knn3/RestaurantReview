@@ -3,8 +3,8 @@ import RestaurantFinder from '../apis/RestaurantFinder';
 import { RestaurantContext } from '../context/RestaurantContext';
 
 const RestaurantLists = (props) => {
-    const {restaurants, setRestaurants} = useContext(RestaurantContext);
-    
+    const { restaurants, setRestaurants } = useContext(RestaurantContext);
+          
     useEffect(() => {
         const fetchData = async () => {
             try {
