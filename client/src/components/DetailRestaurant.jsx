@@ -5,6 +5,7 @@ import RestaurantFinder from '../apis/RestaurantFinder';
 import { RestaurantContext } from '../context/RestaurantContext';
 import Reviews from './Reviews';
 import StarRating from './StarRating';
+import AddReview from "../components/AddReview";
 
 const DetailRestaurant = () => {
     const { id } = useParams();
@@ -15,8 +16,8 @@ const DetailRestaurant = () => {
         const fetchData = async () => {
             try {
               const response = await RestaurantFinder.get(`/${id}`);
-              // fetch a single restaurant and set global state
-              setSelectedRestaurant(response.data.data.restaurant);
+              // fetch a single restaurant and all of its reviews and set global state
+              setSelectedRestaurant(response.data.data);
             } catch (err) {
               console.log(err);
             }
@@ -26,16 +27,17 @@ const DetailRestaurant = () => {
     }, [])
 
   return (
-      <div>
+    <div>
       {selectedRestaurant && (
         <>
           <div className="mt-3 container">
-            <Reviews/>
-        </div>
+            <Reviews reviews={selectedRestaurant.reviews} />
+          </div>
+          <AddReview />
         </>
-      )}  
+      )}
     </div>
-  )
+  );
 }
 
 export default DetailRestaurant

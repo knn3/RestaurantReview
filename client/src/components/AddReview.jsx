@@ -9,7 +9,7 @@ const AddReview = () => {
     <div className="mb-2 container gap-3">
       <form action="">
         <div className="form-row">
-          <div classname="form-group col-8">
+          <div className="form-group col-8">
             <label htmlFor="name">Name</label>
             <input
               value={name}
@@ -21,7 +21,7 @@ const AddReview = () => {
             ></input>
           </div>
           <br />
-          <div classname="form-group col-4">
+          <div className="form-group col-4">
             <label htmlFor="rating">Rating</label>
             <select
               value={rating}

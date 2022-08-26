@@ -38,15 +38,22 @@ app.get("/api/v1/restaurants", async (req, res) => {
 
 app.get("/api/v1/restaurants/:id", async (req, res) => {
     try {
-      const id = req.params.id;
-      // Parameterize query prevent us from being attacked, injection, etc..
-      const result = await db.query("SELECT * FROM restaurants WHERE id = $1", [
-        id,
-      ]);
+        const id = req.params.id;
+        
+        // Parameterize query prevent us from being attacked, injection, etc..
+        const restaurant = await db.query("SELECT * FROM restaurants WHERE id = $1", [
+            id,
+        ]);
+        
+        // get all reviews that have the restaurant_id the same as this restaurant
+        const reviews = await db.query("SELECT * FROM reviews WHERE restaurant_id = $1", [
+          id,
+        ]);
       res.status(200).json({
         status: "success",
         data: {
-          restaurant: result.rows[0],
+            restaurant: restaurant.rows[0],
+            reviews: reviews.rows,
         },
       });
     }

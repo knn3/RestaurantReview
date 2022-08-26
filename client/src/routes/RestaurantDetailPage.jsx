@@ -7,7 +7,6 @@ const RestaurantDetailPage = () => {
     <div>
       <h1 className="text-center">Detail Page</h1>
       <DetailRestaurant />
-      <AddReview/>
     </div>
   );
 }
