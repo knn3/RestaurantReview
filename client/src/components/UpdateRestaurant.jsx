@@ -1,33 +1,77 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
+import RestaurantFinder from '../apis/RestaurantFinder';
 
 const UpdateRestaurant = (props) => {
-    const { id } = useParams();
+  // Retrieve id from params (from the router)
+  const { id } = useParams();
+
+  const [name, setName] = useState("");
+  const [location, setLocation] = useState("");
+  const [priceRange, setPriceRange] = useState("");
+  
+    useEffect(() => {
+      // fetch restaurant with a specific id and then set state varibles accordingly
+      const fetchData = async () => {
+        try {
+          const response = await RestaurantFinder.get(`/${id}`);
+          setName(response.data.data.restaurant.name);
+          setLocation(response.data.data.restaurant.location);
+          setPriceRange(response.data.data.restaurant.price_range);
+        } catch (err) {
+          console.log(err);
+        }
+      };
+      fetchData();
+    }, [])  
+
   return (
     <div className="container">
       <form action="">
         <div className="form-group">
           <label htmlFor="name">Name</label>
-          <input id="name" className="form-control" type="text" />
+          <input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            id="name"
+            className="form-control"
+            type="text"
+          />
         </div>
-        
+
         <br />
-        
+
+        {/* set value as a state varible and onChange will set call setLocation to store in state varible */}
         <div className="form-group">
           <label htmlFor="location">Location</label>
-          <input id="location" className="form-control" type="text" />
+          <input
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            id="location"
+            className="form-control"
+            type="text"
+          />
         </div>
-        
+
         <br />
 
         <div className="form-group">
-          <label htmlFor="price_range">Price Range</label>
-          <input id="price_range" className="form-control" type="number" />
+          <select
+            value={priceRange}
+            onChange={(e) => setPriceRange(e.target.value)}
+            className="custom-select my-1 mr-sm-2 w-100 h-50 rounded"
+          >
+            <option value="1">$</option>
+            <option value="2">$$</option>
+            <option value="3">$$$</option>
+            <option value="4">$$$$</option>
+            <option value="5">$$$$$</option>
+          </select>
         </div>
-        
-        <br/>
-        
-        <button className='btn btn-primary'>Submit</button>
+
+        <br />
+
+        <button className="btn btn-primary">Submit</button>
       </form>
     </div>
   );
