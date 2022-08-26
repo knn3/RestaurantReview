@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import RestaurantFinder from '../apis/RestaurantFinder';
 
 const UpdateRestaurant = (props) => {
-  // Retrieve id from params (from the router)
-  const { id } = useParams();
+    // Retrieve id from params (from the router)
+    const { id } = useParams();
 
-  const [name, setName] = useState("");
-  const [location, setLocation] = useState("");
-  const [priceRange, setPriceRange] = useState("");
+    const [name, setName] = useState("");
+    const [location, setLocation] = useState("");
+    const [priceRange, setPriceRange] = useState("");
+    
+    const navigate = useNavigate();
   
     useEffect(() => {
       // fetch restaurant with a specific id and then set state varibles accordingly
@@ -24,6 +26,22 @@ const UpdateRestaurant = (props) => {
       };
       fetchData();
     }, [])  
+
+    const handleUpdate = async (e) => {
+        e.preventDefault();
+
+        try {
+            const response = await RestaurantFinder.put(`/${id}`, {
+              name,
+              location,
+              price_range: priceRange,
+            });
+            navigate('/')
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
 
   return (
     <div className="container">
@@ -71,7 +89,7 @@ const UpdateRestaurant = (props) => {
 
         <br />
 
-        <button className="btn btn-primary">Submit</button>
+        <button type='submit' onClick={handleUpdate} className="btn btn-primary">Submit</button>
       </form>
     </div>
   );
