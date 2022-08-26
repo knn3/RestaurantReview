@@ -20,6 +20,12 @@ const RestaurantLists = (props) => {
     const handleDelete = async (id) => {
         try {
             const response = await RestaurantFinder.delete(`/${id}`);
+            setRestaurants(
+              restaurants.filter((restaurant) => {
+                return restaurant.id !== id;
+              })
+            );
+
         }
         catch (err) {
             console.log(err);
