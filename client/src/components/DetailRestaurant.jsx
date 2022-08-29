@@ -4,7 +4,6 @@ import { useParams } from 'react-router-dom'
 import RestaurantFinder from '../apis/RestaurantFinder';
 import { RestaurantContext } from '../context/RestaurantContext';
 import Reviews from './Reviews';
-import StarRating from './StarRating';
 import AddReview from "../components/AddReview";
 
 const DetailRestaurant = () => {
@@ -30,6 +29,7 @@ const DetailRestaurant = () => {
     <div>
       {selectedRestaurant && (
         <>
+          <h1 className='text-center mt-4 display-1'>{selectedRestaurant.restaurant.name}</h1>
           <div className="mt-3 container">
             <Reviews reviews={selectedRestaurant.reviews} />
           </div>
