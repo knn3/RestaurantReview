@@ -5,6 +5,7 @@ import RestaurantFinder from '../apis/RestaurantFinder';
 import { RestaurantContext } from '../context/RestaurantContext';
 import Reviews from './Reviews';
 import AddReview from "../components/AddReview";
+import StarRating from './StarRating';
 
 const DetailRestaurant = () => {
     const { id } = useParams();
@@ -30,6 +31,12 @@ const DetailRestaurant = () => {
       {selectedRestaurant && (
         <>
           <h1 className='text-center mt-4 display-1'>{selectedRestaurant.restaurant.name}</h1>
+          <div className="text-center">
+            <StarRating rating={selectedRestaurant.restaurant.average_rating} />
+            <span className="text-warning m-1">
+              {selectedRestaurant.restaurant.count ? `(${selectedRestaurant.restaurant.count})` : "(0)"}
+            </span>
+          </div>
           <div className="mt-3 container">
             <Reviews reviews={selectedRestaurant.reviews} />
           </div>

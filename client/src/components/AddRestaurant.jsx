@@ -13,12 +13,13 @@ const AddRestaurant = () => {
         e.preventDefault();
 
         try {
-            const response = await RestaurantFinder.post("/", {
-                name,
-                location,
-                price_range: priceRange,
-            });
-            addRestaurants(response.data.data.restaurant); 
+          const response = await RestaurantFinder.post("/", {
+            name,
+            location,
+            price_range: priceRange,
+          });
+          addRestaurants(response.data.data.restaurant);
+          window.location.reload();
         }
         catch (err) {
             console.log(err);
