@@ -1,9 +1,32 @@
 import React, { useState } from 'react'
+import { useParams } from 'react-router-dom';
+import RestaurantFinder from '../apis/RestaurantFinder';
 
 const AddReview = () => {
+    const { id } = useParams();
+
     const [name, setName] = useState("");
     const [reviewText, setReviewText] = useState("");
     const [rating, setRating] = useState("Rating");
+
+    const handleSubmitReview = async (e) => {
+        e.preventDefault();
+
+
+        try {
+            const response = await RestaurantFinder.post(`/${id}/add_review`, {
+                name,
+                review: reviewText,
+                rating
+            });
+            console.log(response);
+            window.location.reload();
+        }
+        catch (err) {
+            console.log(err)
+        }
+
+    }
 
   return (
     <div className="mb-2 container gap-3">
@@ -50,7 +73,13 @@ const AddReview = () => {
           ></textarea>
         </div>
         <br />
-        <button className="btn btn-primary">Submit</button>
+        <button
+          type="submit"
+          onClick={(e) => handleSubmitReview(e)}
+          className="btn btn-primary"
+        >
+          Submit
+        </button>
       </form>
     </div>
   );
