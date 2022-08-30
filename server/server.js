@@ -4,6 +4,7 @@ const morgan = require("morgan");
 const app = express();
 const db = require("./DB/index.js");
 const cors = require("cors");
+const { query } = require("express");
 
 app.use(cors());
 app.use(express.json());
@@ -20,13 +21,15 @@ app.use(express.json());
 
 app.get("/api/v1/restaurants", async (req, res) => {
     try {
-        const results = await db.query("SELECT * FROM restaurants");
+        const restaurantRatingData = await db.query(
+            "SELECT * FROM restaurants LEFT JOIN (SELECT restaurant_id, COUNT(*), TRUNC(AVG(rating), 1) AS average_rating FROM reviews GROUP BY restaurant_id) reviews ON restaurants.id = reviews.restaurant_id"
+        );
         res.status(200).json({
-            status: "succes",
-            results: results.rows.length,
-            data: {
-                restaurants: results.rows,
-            },
+          status: "succes",
+          results: restaurantRatingData.rows.length,
+          data: {
+            restaurants: restaurantRatingData.rows,
+          },
         });
     }
     catch (err) {
@@ -41,9 +44,10 @@ app.get("/api/v1/restaurants/:id", async (req, res) => {
         const id = req.params.id;
         
         // Parameterize query prevent us from being attacked, injection, etc..
-        const restaurant = await db.query("SELECT * FROM restaurants WHERE id = $1", [
-            id,
-        ]);
+        const restaurant = await db.query(
+          "SELECT * FROM restaurants LEFT JOIN (SELECT restaurant_id, COUNT(*), TRUNC(AVG(rating), 1) AS average_rating FROM reviews GROUP BY restaurant_id) reviews ON restaurants.id = reviews.restaurant_id WHERE id = $1",
+          [id]
+        );
         
         // get all reviews that have the restaurant_id the same as this restaurant
         const reviews = await db.query("SELECT * FROM reviews WHERE restaurant_id = $1", [
